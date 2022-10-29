@@ -1,3 +1,4 @@
+import 'package:background_users/Screens/user_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String type = "";
   var un;
-  Color? bgcolor;
+  Color bgcolor = Colors.white;
+  bool val = true;
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore.instance
@@ -23,15 +26,18 @@ class _HomeState extends State<Home> {
         un = event['Username'];
         if (un.toString().toLowerCase() == "red") {
           bgcolor = Colors.red;
+          val = true;
         }
         if (un.toString().toLowerCase() == "green") {
           bgcolor = Colors.green;
+          val = true;
         }
         if (un.toString().toLowerCase() == "blue") {
           bgcolor = Colors.blue;
+          val = true;
         }
         if (un.toString().toLowerCase() == "mixedcolor") {
-          bgcolor = Colors.black;
+          val = false;
         }
       });
     });
@@ -40,8 +46,9 @@ class _HomeState extends State<Home> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
               },
               icon: Icon(
                 Icons.exit_to_app,
@@ -49,10 +56,62 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Container(
-          decoration:
-              BoxDecoration(gradient: LinearGradient(colors: [bgcolor!])),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: val
+                      ? [bgcolor, bgcolor]
+                      : [Colors.red, Colors.green, Colors.blue])),
           width: double.infinity,
-          child: Text("home")),
+          height: double.infinity,
+          child: Column(
+            children: [
+              RadioListTile(
+                value: "Admin",
+                groupValue: type,
+                onChanged: (value) {
+                  setState(() {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(widget.us_id)
+                        .update({"user_type": value.toString()});
+                    type = value.toString();
+                  });
+                },
+                title: Text("Admin"),
+                secondary: Icon(Icons.admin_panel_settings),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              RadioListTile(
+                value: "User",
+                groupValue: type,
+                onChanged: (value) {
+                  setState(() {
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(widget.us_id)
+                        .update({"user_type": value.toString()});
+                    type = value.toString();
+                  });
+                },
+                title: Text("User"),
+                secondary: Icon(Icons.person),
+              ),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return User_Info(
+                          us_id: widget.us_id,
+                        );
+                      },
+                    ));
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                  label: Text("User info"))
+            ],
+          )),
     );
   }
 }
