@@ -1,3 +1,5 @@
+import 'package:background_users/Screens/sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +11,16 @@ class Sign_up extends StatefulWidget {
 }
 
 class _Sign_upState extends State<Sign_up> {
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
+  String us_id = "";
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController username = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+        ),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -25,7 +31,7 @@ class _Sign_upState extends State<Sign_up> {
                     child: const Text(
                       'Background Users',
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.orange,
                           fontWeight: FontWeight.w500,
                           fontSize: 30),
                     )),
@@ -34,12 +40,12 @@ class _Sign_upState extends State<Sign_up> {
                     padding: const EdgeInsets.all(10),
                     child: const Text(
                       'Sign Up',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20, color: Colors.orange),
                     )),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
-                    controller: nameController,
+                    controller: username,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'User Name',
@@ -47,37 +53,57 @@ class _Sign_upState extends State<Sign_up> {
                   ),
                 ),
                 Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: email,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                    ),
+                  ),
+                ),
+                Container(
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextField(
                     obscureText: true,
-                    controller: passwordController,
+                    controller: password,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    //forgot password screen
-                  },
-                  child: const Text(
-                    'Forgot Password',
-                  ),
-                ),
                 Container(
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
-                      child: const Text('Create my Account'),
+                      style: ElevatedButton.styleFrom(primary: Colors.orange),
+                      child: const Text(
+                        'Create my Account',
+                      ),
                       onPressed: () async {
                         try {
                           FirebaseAuth AuthObject = FirebaseAuth.instance;
 
                           UserCredential mysignupcre =
                               await AuthObject.createUserWithEmailAndPassword(
-                                  email: nameController.text,
-                                  password: passwordController.text);
+                                  email: email.text, password: password.text);
+                          us_id = mysignupcre.user!.uid;
+
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(mysignupcre.user!.uid)
+                              .set({
+                            'Username': username.text,
+                            "Email": email.text,
+                            'password': password.text,
+                            'user_type': "",
+                          });
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Sign_in();
+                            },
+                          ));
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Sorry something wrong")));
@@ -90,12 +116,12 @@ class _Sign_upState extends State<Sign_up> {
                     TextButton(
                       child: const Text(
                         'Sign In',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, color: Colors.orange),
                       ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return Sign_up();
+                            return Sign_in();
                           },
                         ));
                       },

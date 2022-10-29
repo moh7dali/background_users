@@ -5,8 +5,13 @@ import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

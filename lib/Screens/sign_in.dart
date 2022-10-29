@@ -1,3 +1,4 @@
+import 'package:background_users/Screens/home.dart';
 import 'package:background_users/Screens/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _Sign_inState extends State<Sign_in> {
                     height: 50,
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
-                      child: const Text('Create my Account'),
+                      child: const Text('Login'),
                       onPressed: () async {
                         try {
                           FirebaseAuth AuthObject = FirebaseAuth.instance;
@@ -79,6 +80,11 @@ class _Sign_inState extends State<Sign_in> {
                               await AuthObject.signInWithEmailAndPassword(
                                   email: nameController.text,
                                   password: passwordController.text);
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Home();
+                            },
+                          ));
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Sorry something wrong")));
