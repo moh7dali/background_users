@@ -44,20 +44,17 @@ class _HomeState extends State<Home> {
       });
     });
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.exit_to_app,
-              ))
-        ],
-      ),
+      bottomNavigationBar: IconButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.exit_to_app,
+            size: 40,
+          )),
       body: Container(
+          alignment: Alignment.center,
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   colors: val
@@ -66,39 +63,67 @@ class _HomeState extends State<Home> {
           width: double.infinity,
           height: double.infinity,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              RadioListTile(
-                value: "Admin",
-                groupValue: type,
-                onChanged: (value) {
-                  setState(() {
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(widget.us_id)
-                        .update({"user_type": value.toString()});
-                    type = value.toString();
-                  });
-                },
-                title: Text("Admin"),
-                secondary: Icon(Icons.admin_panel_settings),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              RadioListTile(
-                value: "User",
-                groupValue: type,
-                onChanged: (value) {
-                  setState(() {
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(widget.us_id)
-                        .update({"user_type": value.toString()});
-                    type = value.toString();
-                  });
-                },
-                title: Text("User"),
-                secondary: Icon(Icons.person),
+              Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(width: 0.5),
+                    borderRadius: BorderRadius.all(Radius.circular(
+                            30.0) //                 <--- border radius here
+                        ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RadioListTile(
+                        value: "Admin",
+                        groupValue: type,
+                        onChanged: (value) {
+                          setState(() {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(widget.us_id)
+                                .update({"user_type": value.toString()});
+                            type = value.toString();
+                          });
+                        },
+                        title: Text(
+                          "Admin",
+                          style: GoogleFonts.audiowide(
+                              fontSize: 26,
+                              color: Color.fromARGB(179, 0, 0, 0)),
+                        ),
+                        secondary: Icon(Icons.admin_panel_settings),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RadioListTile(
+                        value: "User",
+                        groupValue: type,
+                        onChanged: (value) {
+                          setState(() {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(widget.us_id)
+                                .update({"user_type": value.toString()});
+                            type = value.toString();
+                          });
+                        },
+                        title: Text(
+                          "User",
+                          style: GoogleFonts.audiowide(
+                              fontSize: 26,
+                              color: Color.fromARGB(179, 0, 0, 0)),
+                        ),
+                        secondary: Icon(Icons.person),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               ElevatedButton.icon(
                   onPressed: () {
