@@ -11,6 +11,7 @@ class Sign_in extends StatefulWidget {
 }
 
 class _Sign_inState extends State<Sign_in> {
+  String us_id = "";
   TextEditingController nameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   @override
@@ -80,9 +81,10 @@ class _Sign_inState extends State<Sign_in> {
                               await AuthObject.signInWithEmailAndPassword(
                                   email: nameController.text,
                                   password: passwordController.text);
+                          us_id = mysignupcre.user!.uid;
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
-                              return Home();
+                              return Home(us_id: us_id);
                             },
                           ));
                         } catch (e) {
