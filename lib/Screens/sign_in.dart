@@ -38,9 +38,7 @@ class _Sign_inState extends State<Sign_in> {
                     height: 400,
                     decoration: BoxDecoration(
                       border: Border.all(width: 1.5),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                              30.0) //                 <--- border radius here
-                          ),
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     ),
                     child: Column(
                       children: [
@@ -49,7 +47,8 @@ class _Sign_inState extends State<Sign_in> {
                             padding: const EdgeInsets.all(10),
                             child: const Text(
                               'Sign In',
-                              style: TextStyle(fontSize: 30),
+                              style:
+                                  TextStyle(fontSize: 30, color: Colors.blue),
                             )),
                         Container(
                           padding: const EdgeInsets.all(10),
@@ -101,6 +100,8 @@ class _Sign_inState extends State<Sign_in> {
                                       return Home(us_id: us_id);
                                     },
                                   ));
+                                  nameController.clear();
+                                  passwordController.clear();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

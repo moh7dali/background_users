@@ -66,14 +66,13 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(
+                    bottom: 50, top: 100, left: 20, right: 20),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(width: 0.5),
-                    borderRadius: BorderRadius.all(Radius.circular(
-                            30.0) //                 <--- border radius here
-                        ),
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -96,10 +95,14 @@ class _HomeState extends State<Home> {
                               fontSize: 26,
                               color: Color.fromARGB(179, 0, 0, 0)),
                         ),
-                        secondary: Icon(Icons.admin_panel_settings),
+                        secondary: Icon(
+                          Icons.admin_panel_settings,
+                          size: 35,
+                        ),
                       ),
-                      SizedBox(
-                        height: 20,
+                      Divider(
+                        thickness: 5,
+                        color: Colors.black,
                       ),
                       RadioListTile(
                         value: "User",
@@ -119,26 +122,41 @@ class _HomeState extends State<Home> {
                               fontSize: 26,
                               color: Color.fromARGB(179, 0, 0, 0)),
                         ),
-                        secondary: Icon(Icons.person),
+                        secondary: Icon(
+                          Icons.person,
+                          size: 35,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
               ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return User_Info(
-                          us_id: widget.us_id,
-                          bgcol: bgcolor,
-                          val: val,
-                        );
-                      },
-                    ));
-                  },
-                  icon: Icon(Icons.arrow_forward),
-                  label: Text("User info"))
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return User_Info(
+                        us_id: widget.us_id,
+                        bgcol: bgcolor,
+                        val: val,
+                      );
+                    },
+                  ));
+                },
+                icon: Icon(
+                  Icons.arrow_forward,
+                  color: Color.fromARGB(179, 0, 0, 0),
+                  size: 40,
+                ),
+                label: Text(
+                  "User info",
+                  style: GoogleFonts.audiowide(
+                      fontSize: 30, color: Color.fromARGB(179, 0, 0, 0)),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                ),
+              )
             ],
           )),
     );

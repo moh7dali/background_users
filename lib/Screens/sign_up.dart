@@ -37,9 +37,7 @@ class _Sign_upState extends State<Sign_up> {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(width: 1.5),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                              30.0) //                 <--- border radius here
-                          ),
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     ),
                     height: 400,
                     width: 200,
@@ -119,6 +117,9 @@ class _Sign_upState extends State<Sign_up> {
                                       return Sign_in();
                                     },
                                   ));
+                                  email.clear();
+                                  username.clear();
+                                  password.clear();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
