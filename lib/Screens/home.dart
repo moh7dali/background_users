@@ -2,6 +2,7 @@ import 'package:background_users/Screens/user_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
   Home({this.us_id});
@@ -37,6 +38,7 @@ class _HomeState extends State<Home> {
           val = true;
         }
         if (un.toString().toLowerCase() == "mixedcolor") {
+          bgcolor = Colors.purple;
           val = false;
         }
       });
@@ -104,6 +106,8 @@ class _HomeState extends State<Home> {
                       builder: (context) {
                         return User_Info(
                           us_id: widget.us_id,
+                          bgcol: bgcolor,
+                          val: val,
                         );
                       },
                     ));
